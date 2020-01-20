@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+bspc subscribe all | while read -r line; do
+    case $line in
+      node_add*|node_remove*|node_transfer*)
+            $DIR/bspi.py
+            ;;
+        *)
+        ;;
+    esac
+done
