@@ -28,6 +28,7 @@ font-5 = Font Awesome 5 Brands:pixelsize=20;3
   - [ ] tests
   - [ ] docs
   - [ ] screencast gif
+  - [ ] external confirguation
   
  # Known issues
  
