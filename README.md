@@ -3,8 +3,8 @@
 Automatic desktop renamer for bspwm.
 Similar to [btops](https://github.com/cmschuetz/btops) but interfaces via subprocesses rather than UNIX sockets and focuses on icons.
 
-Recognizes clients and renames desktops to their pre-configured
-FontAwesome icons. Works with polybar.
+Recognizes clients and renames desktops accordingly to a pre-configured
+FontAwesome icon set. Works with polybar.
 
 ![scrot](https://user-images.githubusercontent.com/173738/72690918-348f7d80-3b21-11ea-979e-4c70228eb958.png)
 
