@@ -66,6 +66,10 @@ class Node:
         return self._data['name']
 
     @property
+    def is_sticky(self):
+        return self._data['sticky']
+
+    @property
     def deduced_name(self):
         if self.client_classes:
             return ' '.join([str(Icon(client_class)) for client_class in
@@ -75,7 +79,7 @@ class Node:
 
     @property
     def client_classes(self):
-        cs = [child.client_class for child in self.all_children]
+        cs = [child.client_class for child in self.all_children if not child.is_sticky]
 
         if self.client_class:
             cs.append(self.client_class)
