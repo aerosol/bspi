@@ -81,7 +81,7 @@ class Node:
     def client_classes(self):
         cs = [child.client_class for child in self.all_children if not child.is_sticky]
 
-        if self.client_class:
+        if self.client_class and not self.is_sticky:
             cs.append(self.client_class)
 
         return list(filter(None, cs))
