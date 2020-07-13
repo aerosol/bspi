@@ -13,16 +13,34 @@ ICONS = {
         "signal": "",
         "slack": "",
         "spotify": "",
+        "termite": "",
+        "code-oss": "",
         os.environ.get('TERMINAL'): "",
-        None: " "
-    }
+        "None": " "
+}
 
 class Icon:
-    def __init__(self, client_class):
+    def __init__(self, client_class=None):
         self.client_class = client_class
+        self.ICONS = self._config()
 
     def __str__(self):
-        return ICONS.get(self.client_class.lower(), ICONS[None])
+        return self.ICONS.get(self.client_class.lower(), self.ICONS.get('None'))
+
+    def _config(self):
+        home = os.environ.get('HOME')
+        default_loc = f"{home}/.config/bspwm/bspi.iconmap"
+        configured_loc = os.environ.get('bspi_config_path', default_loc)
+        if os.path.isfile(configured_loc):
+            with open(configured_loc) as f:
+                data = json.load(f)
+
+        else:
+            # Use the default icons in case no configuration file was found
+            data = ICONS
+
+        return data
+
 
 class Bspwm:
     @staticmethod
@@ -125,5 +143,6 @@ if __name__ == "__main__":
                 if desktop['name'] != node.deduced_name:
                     print("Renaming desktop: %s" % node)
                     Bspwm.rename_desktop(desktop['id'], node.deduced_name)
+
             else:
-                Bspwm.rename_desktop(desktop['id'], "")
+                Bspwm.rename_desktop(desktop['id'], Icon()._config().get('None'))
