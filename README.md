@@ -10,9 +10,11 @@ FontAwesome icon set. Works with polybar.
 
 ## Prerequisites:
 
-bspwm (duh), xprop, python3, FontAwesome etc.
+bspwm (duh), xprop, python3(& pip), FontAwesome etc.
 
 ## Installation:
+
+Install requirements: `pip install --user -r requirements.txt`
 
 Run `bspi_listen &` in your `bspwmrc`.
 For polybar, make sure the fonts are configured in `polybar/config`, e.g.
