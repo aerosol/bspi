@@ -5,19 +5,19 @@ import os
 import re
 import subprocess
 import sys
+import argparse
+import configparser
+import xdg
 
-ICONS = {
-        "dolphin": "",
-        "chromium": "",
-        "firefox": "",
-        "signal": "",
-        "slack": "",
-        "spotify": "",
-        "termite": "",
-        "code-oss": "",
-        os.environ.get('TERMINAL'): "",
-        "None": " "
-}
+script_dir = os.path.dirname(os.path.realpath(__file__))
+default_config_loc = f'{script_dir}/bspi_iconmap.ini'
+
+parser = argparse.ArgumentParser(description='bspi - rename bspwm desktops with icons based on the applications \
+    currently running under that desktop')
+parser.add_argument('-c', '--config', default=f'{default_config_loc}', help='absolute or relative path to the bspi \
+    configuration file')
+args = parser.parse_args()
+
 
 class Icon:
     def __init__(self, client_class=None):
@@ -28,18 +28,16 @@ class Icon:
         return self.ICONS.get(self.client_class.lower(), self.ICONS.get('None'))
 
     def _config(self):
-        home = os.environ.get('HOME')
-        default_loc = f"{home}/.config/bspwm/bspi.iconmap"
-        configured_loc = os.environ.get('bspi_config_path', default_loc)
-        if os.path.isfile(configured_loc):
-            with open(configured_loc) as f:
-                data = json.load(f)
+        config = configparser.ConfigParser()
+        if os.path.isfile(args.config):
+            cfg_file_path = args.config
 
         else:
-            # Use the default icons in case no configuration file was found
-            data = ICONS
+            cfg_file_path = f'{xdg.XDG_CONFIG_HOME}/bspwm/bspi_iconmap.ini'
 
-        return data
+        config.read_file(open(cfg_file_path))
+
+        return config['Icons']
 
 
 class Bspwm:
