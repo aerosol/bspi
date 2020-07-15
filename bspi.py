@@ -7,10 +7,9 @@ import subprocess
 import sys
 import argparse
 import configparser
-import xdg
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
-default_config_loc = f'{script_dir}/bspi_iconmap.ini'
+default_config_loc = f'{script_dir}/bspi.ini'
 
 parser = argparse.ArgumentParser(description='bspi - rename bspwm desktops with icons based on the applications \
     currently running under that desktop')
@@ -25,19 +24,16 @@ class Icon:
         self.ICONS = self._config()
 
     def __str__(self):
-        return self.ICONS.get(self.client_class.lower(), self.ICONS.get('None'))
+        return self.ICONS.get(self.client_class.lower(), self.ICONS.get('_other'))
 
     def _config(self):
         config = configparser.ConfigParser()
         if os.path.isfile(args.config):
-            cfg_file_path = args.config
+            config.read_file(open(args.config))
+            return config['Icons']
 
         else:
-            cfg_file_path = f'{xdg.XDG_CONFIG_HOME}/bspwm/bspi_iconmap.ini'
-
-        config.read_file(open(cfg_file_path))
-
-        return config['Icons']
+            exit(f"No file was found at the specified path for the configuration file\npath: {args.config}")
 
 
 class Bspwm:
@@ -143,4 +139,4 @@ if __name__ == "__main__":
                     Bspwm.rename_desktop(desktop['id'], node.deduced_name)
 
             else:
-                Bspwm.rename_desktop(desktop['id'], Icon()._config().get('None'))
+                Bspwm.rename_desktop(desktop['id'], Icon()._config().get('_other'))
