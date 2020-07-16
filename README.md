@@ -15,6 +15,27 @@ bspwm (duh), xprop, python3, FontAwesome etc.
 ## Installation:
 
 Run `bspi_listen &` in your `bspwmrc`.
+
+Icons are configured via `bspi.ini` - you may maintain your own copy and use it with `bspi_listen --config path/to/bspi.ini`.
+The `_other` key is a fallback for all mismatched window names.
+
+```ini
+[Icons]
+dolphin = 
+chromium = 
+firefox = 
+signal = 
+slack = 
+spotify = 
+termite = 
+urxvt = 
+tilix = 
+alacritty = 
+kitty = 
+code-oss = 
+_other = 
+```
+
 For polybar, make sure the fonts are configured in `polybar/config`, e.g.
 
 ```
