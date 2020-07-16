@@ -5,24 +5,36 @@ import os
 import re
 import subprocess
 import sys
+import argparse
+import configparser
 
-ICONS = {
-        "dolphin": "",
-        "chromium": "",
-        "firefox": "",
-        "signal": "",
-        "slack": "",
-        "spotify": "",
-        os.environ.get('TERMINAL'): "",
-        None: " "
-    }
+script_dir = os.path.dirname(os.path.realpath(__file__))
+default_config_loc = f'{script_dir}/bspi.ini'
+
+parser = argparse.ArgumentParser(description='bspi - rename bspwm desktops with icons based on the applications \
+    currently running under that desktop')
+parser.add_argument('-c', '--config', default=f'{default_config_loc}', help='absolute or relative path to the bspi \
+    configuration file')
+args = parser.parse_args()
+
 
 class Icon:
-    def __init__(self, client_class):
+    def __init__(self, client_class=None):
         self.client_class = client_class
+        self.ICONS = self._config()
 
     def __str__(self):
-        return ICONS.get(self.client_class.lower(), ICONS[None])
+        return self.ICONS.get(self.client_class.lower(), self.ICONS.get('_other'))
+
+    def _config(self):
+        config = configparser.ConfigParser()
+        if os.path.isfile(args.config):
+            config.read_file(open(args.config))
+            return config['Icons']
+
+        else:
+            exit(f"No file was found at the specified path for the configuration file\npath: {args.config}")
+
 
 class Bspwm:
     @staticmethod
@@ -125,5 +137,6 @@ if __name__ == "__main__":
                 if desktop['name'] != node.deduced_name:
                     print("Renaming desktop: %s" % node)
                     Bspwm.rename_desktop(desktop['id'], node.deduced_name)
+
             else:
-                Bspwm.rename_desktop(desktop['id'], "")
+                Bspwm.rename_desktop(desktop['id'], Icon()._config().get('_other'))
