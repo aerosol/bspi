@@ -14,9 +14,19 @@ bspwm (duh), xprop, python3, FontAwesome etc.
 
 ## Installation:
 
-Run `bspi_listen &` in your `bspwmrc`.
+### Arch Linux
 
-Icons are configured via `bspi.ini` - you may maintain your own copy and use it with `bspi_listen --config path/to/bspi.ini`.
+Install the package `bspi-git` from [AUR](https://aur.archlinux.org/packages/bspi-git/) : `aura -A bspi-git`.
+Copy the configuration file: `cp /usr/share/doc/bspi/bspi.ini ~/.config/bspwm/bspi.ini`
+
+### Manual
+
+Place the files `bspi.py` `bspi_listen` in a directory included in your `$PATH`. Store a copy of `bspi.ini` and remember the path. `cp bspi.ini ~/.config/bspwm/bspi.ini`
+
+## Execution
+
+Icons are configured via `bspi.ini` - you may maintain your own copy and use it with `bspi_listen --config path/to/bspi.ini &` (add this to your bspwmrc)
+
 The `_other` key is a fallback for all mismatched window names.
 
 ```ini
@@ -49,7 +59,7 @@ font-5 = Font Awesome 5 Brands:pixelsize=20;3
   - [ ] tests
   - [ ] docs
   - [ ] screencast gif
-  - [ ] external configuration
+  - [x] external configuration
   
  # Known issues
  
